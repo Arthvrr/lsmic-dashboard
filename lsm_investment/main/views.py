@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from .models import Position
+import yfinance as yf
 
 def home(request):
     return render(request, 'home.html')
@@ -27,7 +29,7 @@ def register_view(request):
             messages.success(request, "Compte créé avec succès !")
             return redirect('login')
 
-    return render(request, '/register.html')
+    return render(request, 'register.html')
 
 # Page de connexion
 def login_view(request):
@@ -82,3 +84,34 @@ def update_password_view(request):
         return redirect("profile")
 
     return redirect("profile")
+
+def portfolio_view(request):
+    positions = Position.objects.all()
+    data = []
+
+    for pos in positions:
+        stock = yf.Ticker(pos.ticker)
+        try:
+            current_price = stock.info.get('currentPrice')
+        except:
+            current_price = None
+
+        total_value = current_price * pos.shares if current_price else None
+        if pos.purchase_price and current_price:
+            roi_value = (current_price - pos.purchase_price) * pos.shares
+            roi_percent = ((current_price - pos.purchase_price) / pos.purchase_price) * 100
+        else:
+            roi_value = None
+            roi_percent = None
+
+        data.append({
+            'ticker': pos.ticker,
+            'shares': pos.shares,
+            'purchase_price': pos.purchase_price,
+            'current_price': current_price,
+            'total_value': total_value,
+            'roi_value': roi_value,
+            'roi_percent': roi_percent,
+        })
+
+    return render(request, 'portfolio.html', {'data': data})
