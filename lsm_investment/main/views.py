@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def home(request):
-    return render(request, 'main/home.html')
+    return render(request, 'home.html')
 
 # Page d'inscription
 def register_view(request):
@@ -26,7 +27,7 @@ def register_view(request):
             messages.success(request, "Compte créé avec succès !")
             return redirect('login')
 
-    return render(request, 'main/register.html')
+    return render(request, '/register.html')
 
 # Page de connexion
 def login_view(request):
@@ -40,9 +41,44 @@ def login_view(request):
         else:
             messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
 
-    return render(request, 'main/login.html')
+    return render(request, 'login.html')
 
 # Déconnexion
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+@login_required
+def profile_view(request):
+    if request.method == "POST":
+        new_username = request.POST.get("username")
+
+        if new_username:
+            request.user.username = new_username
+            request.user.save()
+            messages.success(request, "Nom d'utilisateur mis à jour !")
+            return redirect("profile")
+
+    return render(request, "profile.html")
+
+
+@login_required
+def update_password_view(request):
+    if request.method == "POST":
+        p1 = request.POST.get("password1")
+        p2 = request.POST.get("password2")
+
+        if p1 != p2:
+            messages.error(request, "⚠️ Les mots de passe ne correspondent pas.")
+            return redirect("profile")
+
+        request.user.set_password(p1)
+        request.user.save()
+
+        # Reste connecté après changement du mot de passe
+        update_session_auth_hash(request, request.user)
+
+        messages.success(request, "Mot de passe mis à jour !")
+        return redirect("profile")
+
+    return redirect("profile")

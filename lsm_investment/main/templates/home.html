@@ -58,15 +58,22 @@
     <header>
         <div class="logo">LSM Investment Club</div>
         <nav>
-            <a href="#">Accueil</a>
-            <a href="#">Membres</a>
-            <a href="#">Investissements</a>
+            <a href="#">Actualités</a>
+            <a href="#">Portefeuille du Club</a>
+            <a href="#">Performance</a>
+            {% if user.is_authenticated %}
+                <a href="/profile/">
+                    {{ user.username }}
+                </a>
+            {% else %}
+                <a href="/login/">Login</a>
+            {% endif %}
         </nav>
     </header>
 
     <main>
         <h1>Bienvenue sur le site du LSM Investment Club !</h1>
-        <p>Votre club d’investissement à l’ESL.</p>
+        <p>Votre club d’investissement à la LSM.</p>
     </main>
 </body>
 </html>

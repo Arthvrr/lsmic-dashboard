@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Profil - LSM Investment Club</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f4f5f7;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;     /* centrer verticalement */
+            height: calc(100vh - 80px); /* pleine hauteur moins le header */
+        }
+
+        .profile-card {
+            display: flex;
+            background: white;
+            width: 900px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            gap: 40px;
+        }
+
+        /* Colonne gauche */
+        .left {
+            flex: 1;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin: 8px 0;
+            color: #374151;
+            font-size: 1rem;
+        }
+
+        /* Formulaires */
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            margin-top: 6px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #1E3A8A;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background-color: #274cb0;
+        }
+
+        /* Colonne droite */
+        .right {
+            flex: 1;
+            border-left: 1px solid #e5e7eb;
+            padding-left: 40px;
+        }
+
+        .back-link {
+            margin-top: 25px;
+            display: inline-block;
+            text-decoration: none;
+            color: #1E3A8A;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: #1E3A8A; /* bleu foncé */
+            color: white;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 600;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .back-center {
+            display: block;
+            margin: 25px auto 0 auto; /* top margin + centrer horizontalement */
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">LSM Investment Club</div>
+        <nav>
+            <a href="#">Actualités</a>
+            <a href="#">Portefeuille du Club</a>
+            <a href="#">Performance</a>
+            {% if user.is_authenticated %}
+                <a href="/profile/">
+                    {{ user.username }}
+                </a>
+            {% else %}
+                <a href="/login/">Login</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="profile-card">
+
+            <!-- COLONNE GAUCHE -->
+            <div class="left">
+                <h2>Mon Profil</h2>
+
+                <p><strong>Email :</strong> {{ request.user.email }}</p>
+                <p><strong>Membre depuis :</strong> {{ request.user.date_joined|date:"d/m/Y" }}</p>
+
+                <h3>Modifier mon nom d'utilisateur</h3>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="update_username">
+
+                    <label>Nouveau nom d'utilisateur</label>
+                    <input type="text" name="new_username" value="{{ request.user.username }}" required>
+
+                    <button type="submit">Mettre à jour</button>
+                </form>
+
+                <a href="/" class="back-link back-center">⬅ Retour</a>
+            </div>
+
+            <!-- COLONNE DROITE -->
+            <div class="right">
+                <h3>Changer mon mot de passe</h3>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="change_password">
+
+                    <label>Nouveau mot de passe</label>
+                    <input type="password" name="new_password1" required>
+
+                    <label>Confirmer</label>
+                    <input type="password" name="new_password2" required>
+
+                    <button type="submit">Changer le mot de passe</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
