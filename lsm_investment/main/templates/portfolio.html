@@ -1,9 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Portefeuille du Club - LSM Investment Club</title>
+    <title>Portefeuille du Club 🚀 - LSM Investment Club</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -17,12 +19,15 @@
             padding: 20px 50px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            padding: 25px 21.5%;
         }
         nav a { color: white; margin-left: 20px; text-decoration: none; font-weight: 600; }
         nav a:hover { text-decoration: underline; }
         main { padding: 50px; }
         table { 
-            width: 100%; 
+            width: 60%;
+            margin: 0 auto;
             border-collapse: collapse; 
             background: white; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
@@ -44,6 +49,17 @@
             height: 40px; 
             object-fit: contain; 
             vertical-align: middle;
+        }
+        .portfolio-container {
+            display: flex;
+            align-items: center; /* centre verticalement le h1 et le tableau */
+            gap: 20px; /* espace entre le titre et le tableau */
+            justify-content: center; /* centre horizontalement l’ensemble */
+        }
+
+        .portfolio-container h1 {
+            margin: 0; /* supprime les marges par défaut */
+            font-size: 1.8rem;
         }
     </style>
 </head>
@@ -67,7 +83,7 @@
     </header>
 
     <main>
-        <h1>Portefeuille du Club</h1>
+        <h1 class="portfolio-container">Portefeuille du Club</h1>
         <table>
             <tr>
                 <th>Logo</th>

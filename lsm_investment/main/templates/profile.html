@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mon Profil - LSM Investment Club</title>
-
+    <title>Mon Profil 👀 - LSM Investment Club</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     <style>
         body {
             margin: 0;
@@ -16,8 +17,8 @@
         .container {
             display: flex;
             justify-content: center;
-            align-items: center;     /* centrer verticalement */
-            height: calc(100vh - 80px); /* pleine hauteur moins le header */
+            align-items: center;
+            height: calc(100vh - 80px);
         }
 
         .profile-card {
@@ -104,8 +105,10 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 50px;
-            background-color: #1E3A8A; /* bleu foncé */
+            background-color: #1E3A8A;
             color: white;
+            align-items: center;
+            padding: 25px 21.5%;
         }
 
         nav a {
