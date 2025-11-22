@@ -92,7 +92,8 @@ def portfolio_view(request):
     for pos in positions:
         stock = yf.Ticker(pos.ticker)
         try:
-            current_price = stock.info.get('currentPrice')
+            #current_price = stock.info.get('currentPrice')
+            current_price = stock.info.get('regularMarketPrice') or stock.info.get('currentPrice') or stock.info.get('previousClose')
         except:
             current_price = None
 
@@ -112,6 +113,7 @@ def portfolio_view(request):
             'total_value': total_value,
             'roi_value': roi_value,
             'roi_percent': roi_percent,
+            'logo': pos.logo,
         })
 
     return render(request, 'portfolio.html', {'data': data})

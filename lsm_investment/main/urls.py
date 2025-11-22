@@ -1,6 +1,8 @@
 from django.urls import path, include
 from . import views
 from .views import portfolio_view
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -11,3 +13,6 @@ urlpatterns = [
     path('update-password/', views.update_password_view, name='update_password'),
     path('portfolio/', portfolio_view, name='portfolio'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

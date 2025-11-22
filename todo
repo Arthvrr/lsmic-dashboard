@@ -1,5 +1,6 @@
 - graphes du portefeuille (donut, perf,...)
-- ajouter images de logo à chaque boite du pf
 - ajouter les gens à la db manuellement
+- dark mode (en fonction de l'user)
+- retravailler le CSS
 
 --> publier via pythonanywhere
