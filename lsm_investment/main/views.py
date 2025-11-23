@@ -117,3 +117,21 @@ def portfolio_view(request):
         })
 
     return render(request, 'portfolio.html', {'data': data})
+
+@login_required
+def performance_view(request):
+    # Exemple de données pour le membre connecté
+    # Remplace ces valeurs par tes calculs réels
+    invested_amount = 5000
+    current_value = 6200
+    roi_value = current_value - invested_amount
+    roi_percent = (roi_value / invested_amount) * 100
+
+    context = {
+        'invested_amount': invested_amount,
+        'current_value': current_value,
+        'roi_value': roi_value,
+        'roi_percent': roi_percent,
+    }
+
+    return render(request, 'performance.html', context)

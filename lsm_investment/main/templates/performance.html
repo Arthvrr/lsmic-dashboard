@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Performance personnelle 💸 - LSM Investment Club</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f5f7;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 21.5%;
+            background-color: #1E3A8A;
+            color: white;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 20px;
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 80px); /* soustrait la hauteur du header */
+        }
+
+        .performance-card {
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            width: 400px;
+        }
+
+        .performance-card h1 {
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            color: #1E3A8A;
+        }
+
+        .performance-card p {
+            font-size: 1.2rem;
+            margin: 12px 0;
+            color: #374151;
+        }
+
+        .performance-card p strong {
+            color: #111827;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            color: #1E3A8A;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <a href="{% url 'home' %}" style="color: white; text-decoration: none;">LSM Investment Club</a>
+    </div>
+    <nav>
+        <a href="#">Actualités</a>
+        <a href="/portfolio/">Portefeuille du Club</a>
+        <a href="#">Performance</a>
+        {% if user.is_authenticated %}
+            <a href="/profile/">
+                {{ user.username }}
+            </a>
+        {% else %}
+            <a href="/login/">Login</a>
+        {% endif %}
+    </nav>
+</header>
+
+<div class="main-container">
+    <div class="performance-card">
+        <h1>Performance de {{ user.username }}</h1>
+        <p><strong>Montant investi :</strong> {{ invested_amount }} €</p>
+        <p><strong>Montant actuel :</strong> {{ current_value }} €</p>
+        <p><strong>ROI (€) :</strong> {{ roi_value }} €</p>
+        <p><strong>ROI (%) :</strong> {{ roi_percent|floatformat:2 }}%</p>
+    </div>
+</div>
+
+</body>
+</html>

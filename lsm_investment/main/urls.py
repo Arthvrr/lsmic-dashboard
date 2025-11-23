@@ -12,6 +12,7 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile'),
     path('update-password/', views.update_password_view, name='update_password'),
     path('portfolio/', portfolio_view, name='portfolio'),
+    path('performance/', views.performance_view, name='performance')
 ]
 
 if settings.DEBUG:

@@ -66,16 +66,14 @@
 <body>
     <header>
         <div class="logo">
-            <a href="{% url 'home' %}" style="color: white; text-decoration: none;">LSM Investment Club</a>
+            <a href="{% url 'home' %}">LSM Investment Club</a>
         </div>
         <nav>
             <a href="#">Actualités</a>
-            <a href="/portfolio/">Portefeuille du Club</a>
-            <a href="#">Performance</a>
+            <a href="/portfolio/">Portefeuille</a>
+            <a href="/performance/">Performance</a>
             {% if user.is_authenticated %}
-                <a href="/profile/">
-                    {{ user.username }}
-                </a>
+                <a href="/profile/">{{ user.username }}</a>
             {% else %}
                 <a href="/login/">Login</a>
             {% endif %}

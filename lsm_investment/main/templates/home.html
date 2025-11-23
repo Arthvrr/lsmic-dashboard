@@ -3,7 +3,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Accueil 💸 - LSM Investment Club</title>
+    <title>Accueil 🏦 - LSM Investment Club</title>
     <!-- Police moderne -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
@@ -20,21 +20,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 50px;
+            padding: 20px 21.5%;
             background-color: #1E3A8A;
             color: white;
-            align-items: center;
-            padding:25px 21.5%;
         }
 
-        nav a {
+        header a {
             color: white;
             text-decoration: none;
-            margin-left: 20px;
             font-weight: 600;
+            margin-left: 20px;
         }
 
-        nav a:hover {
+        header a:hover {
             text-decoration: underline;
         }
 
@@ -61,16 +59,14 @@
 <body>
     <header>
         <div class="logo">
-            <a href="{% url 'home' %}" style="color: white; text-decoration: none;">LSM Investment Club</a>
+            <a href="{% url 'home' %}">LSM Investment Club</a>
         </div>
         <nav>
             <a href="#">Actualités</a>
-            <a href="/portfolio/">Portefeuille du Club</a>
-            <a href="#">Performance</a>
+            <a href="/portfolio/">Portefeuille</a>
+            <a href="/performance/">Performance</a>
             {% if user.is_authenticated %}
-                <a href="/profile/">
-                    {{ user.username }}
-                </a>
+                <a href="/profile/">{{ user.username }}</a>
             {% else %}
                 <a href="/login/">Login</a>
             {% endif %}
