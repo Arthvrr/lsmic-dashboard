@@ -16,18 +16,21 @@
 
         .container {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: calc(100vh - 80px);
+            justify-content: center; /* centre horizontalement */
+            align-items: center;     /* centre verticalement */
+            height: 100vh;           /* prend toute la hauteur de la fenêtre */
+            padding: 0 20px;         /* padding horizontal pour mobiles */
+            box-sizing: border-box;
         }
 
         .profile-card {
-            display: flex;
+            width: 60%;               /* largeur 60% de l'écran */
+            max-width: 900px;         /* limite max pour les grands écrans */
             background: white;
-            width: 900px;
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            display: flex;
             gap: 40px;
         }
 
@@ -104,7 +107,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 21.5%;
+            padding: 20px 22.5%;
             background-color: #1E3A8A;
             color: white;
         }

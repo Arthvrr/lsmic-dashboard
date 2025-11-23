@@ -1,3 +1,4 @@
 .DS_Store
 login.env
 __pycache__
+*.csv
