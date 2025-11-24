@@ -8,3 +8,11 @@ class Position(models.Model):
 
     def __str__(self):
         return f"{self.ticker} ({self.shares} parts)"
+
+class AdminEmail(models.Model):
+    class Meta:
+        verbose_name = "Envoyer un email"
+        verbose_name_plural = "Envoyer des emails"
+
+    def __str__(self):
+        return "Envoyer un email à tous les utilisateurs"

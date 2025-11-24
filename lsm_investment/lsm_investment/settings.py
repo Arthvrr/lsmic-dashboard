@@ -11,9 +11,16 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+load_dotenv(ROOT_DIR / "login.env")
+
+EMAIL_HOST_USER = os.getenv("SMTP_USER")
+EMAIL_HOST_PASSWORD = os.getenv("SMTP_PASSWORD")
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 # Quick-start development settings - unsuitable for production
@@ -130,6 +137,6 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "ton.email@gmail.com"       # ton email
-EMAIL_HOST_PASSWORD = "ton_mot_de_passe_app"  # mot de passe d'application
+EMAIL_HOST_USER = os.getenv("SMTP_USER")         # ton email Gmail
+EMAIL_HOST_PASSWORD = os.getenv("SMTP_PASSWORD") # mot de passe d'application Gmail
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
