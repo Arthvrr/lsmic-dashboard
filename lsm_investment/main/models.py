@@ -1,9 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Position(models.Model):
-    ticker = models.CharField(max_length=15)  # le ticker Yahoo, ex: "AIR.PA"
-    shares = models.FloatField()               # nombre de parts détenues
-    purchase_price = models.FloatField(null=True, blank=True)  # optionnel
+    ticker = models.CharField(max_length=15)
+    shares = models.FloatField()             
+    purchase_price = models.FloatField(null=True, blank=True)
     logo = models.ImageField(upload_to='logos/', blank=True, null=True)
 
     def __str__(self):
@@ -16,3 +17,10 @@ class AdminEmail(models.Model):
 
     def __str__(self):
         return "Envoyer un email à tous les utilisateurs"
+
+class NewsletterSubscriber(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    subscribed = models.BooleanField(default=True)  # True = abonné, False = désabonné
+
+    def __str__(self):
+        return f"{self.user.username} ({'abonné' if self.subscribed else 'désabonné'})"

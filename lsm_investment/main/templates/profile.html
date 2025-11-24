@@ -26,13 +26,10 @@
             {% endif %}
         </div>
     </header>
-
-    <div class="container">
+    <!-- <div class="container">
         <div class="profile-card">
 
-            <!-- COLONNE GAUCHE -->
             <div class="left">
-                <h2>Mon Profil</h2>
 
                 <p><strong>Email :</strong> {{ request.user.email }}</p>
                 <p><strong>Membre depuis :</strong> {{ request.user.date_joined|date:"d/m/Y" }}</p>
@@ -49,10 +46,8 @@
                     <button type="submit">Mettre à jour</button>
                 </form>
 
-                <!-- <a href="/" class="back-link back-center">⬅ Retour</a> -->
             </div>
 
-            <!-- COLONNE DROITE -->
             <div class="right">
                 <h3>Changer mon mot de passe</h3>
 
@@ -71,7 +66,69 @@
             </div>
 
         </div>
+    </div> -->
+
+
+    
+    <div class="container">
+        <div class="profile-card">
+
+            <!-- COLONNE GAUCHE -->
+            <div class="left">
+                <p><strong>Email :</strong> {{ request.user.email }}</p>
+                <p><strong>Membre depuis :</strong> {{ request.user.date_joined|date:"d/m/Y" }}</p>
+
+                <h3>Modifier mon nom d'utilisateur</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="update_username">
+
+                    <label>Nouveau nom d'utilisateur</label>
+                    <input type="text" name="new_username" value="{{ request.user.username }}" required>
+
+                    <button type="submit">Mettre à jour</button>
+                </form>
+
+                <h3>Préférences email</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="toggle_newsletter">
+
+                    {% if subscribed %}
+                        <p>Vous êtes actuellement <strong>abonné</strong> à la newsletter.</p>
+                        <button type="submit" class="unsubscribe-btn">Se désabonner</button>
+                    {% else %}
+                        <p>Vous n'êtes pas abonné à la newsletter.</p>
+                        <button type="submit" class="subscribe-btn">S’abonner à la newsletter</button>
+                    {% endif %}
+                </form>
+            </div>
+
+            <!-- COLONNE DROITE -->
+            <div class="right">
+                <h3>Changer mon mot de passe</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="change_password">
+
+                    <label>Nouveau mot de passe</label>
+                    <input type="password" name="new_password1" required>
+
+                    <label>Confirmer</label>
+                    <input type="password" name="new_password2" required>
+
+                    <button type="submit">Changer le mot de passe</button>
+                </form>
+                <form action="{% url 'logout' %}" method="post" style="margin-top: 20px;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn">Se déconnecter</button>
+                </form>
+            </div>
+
+        </div>
     </div>
+
+
 
     <footer>
         LSM Investment Club 2025 ©. Tous droits réservés.

@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Position
+from .models import Position, NewsletterSubscriber
 import yfinance as yf
 
 def home(request):
@@ -50,18 +50,46 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
+
 @login_required
 def profile_view(request):
-    if request.method == "POST":
-        new_username = request.POST.get("username")
+    subscribed = False
+    try:
+        sub, created = NewsletterSubscriber.objects.get_or_create(user=request.user)
+        subscribed = sub.subscribed
+    except:
+        pass
 
-        if new_username:
-            request.user.username = new_username
-            request.user.save()
-            messages.success(request, "Nom d'utilisateur mis à jour !")
+    if request.method == "POST":
+        action = request.POST.get("action")
+
+        if action == "update_username":
+            new_username = request.POST.get("new_username")
+            if new_username:
+                request.user.username = new_username
+                request.user.save()
+                messages.success(request, "Nom d'utilisateur mis à jour !")
+                return redirect("profile")
+
+        elif action == "change_password":
+            p1 = request.POST.get("new_password1")
+            p2 = request.POST.get("new_password2")
+            if p1 != p2:
+                messages.error(request, "⚠️ Les mots de passe ne correspondent pas.")
+            else:
+                request.user.set_password(p1)
+                request.user.save()
+                update_session_auth_hash(request, request.user)
+                messages.success(request, "Mot de passe mis à jour !")
             return redirect("profile")
 
-    return render(request, "profile.html")
+        elif action == "toggle_newsletter":
+            sub.subscribed = not sub.subscribed
+            sub.save()
+            messages.success(request, "Préférences newsletter mises à jour !")
+            return redirect("profile")
+
+    return render(request, "profile.html", {"subscribed": subscribed})
 
 
 @login_required
