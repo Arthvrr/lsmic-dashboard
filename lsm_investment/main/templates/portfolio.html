@@ -6,70 +6,7 @@
     <title>Portefeuille du Club 🚀 - LSM Investment Club</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f4f5f7;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 22.5%;
-            background-color: #1E3A8A;
-            color: white;
-        }
-
-        header a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            margin-left: 20px;
-        }
-
-        header a:hover {
-            text-decoration: underline;
-        }
-        main { padding: 50px; }
-        table { 
-            width: 60%;
-            margin: 0 auto;
-            border-collapse: collapse; 
-            background: white; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
-            border-radius: 8px; 
-            overflow: hidden; 
-        }
-        th, td { 
-            padding: 12px; 
-            text-align: left; 
-            border-bottom: 1px solid #ddd; 
-            height: 60px; /* hauteur fixe pour toutes les lignes */
-            vertical-align: middle; /* centre le contenu verticalement */
-        }
-        th { background-color: #1E3A8A; color: white; }
-
-        /* Toutes les images font 40x40px et gardent leur ratio */
-        td img { 
-            width: 40px; 
-            height: 40px; 
-            object-fit: contain; 
-            vertical-align: middle;
-        }
-        .portfolio-container {
-            display: flex;
-            align-items: center; /* centre verticalement le h1 et le tableau */
-            gap: 20px; /* espace entre le titre et le tableau */
-            justify-content: center; /* centre horizontalement l’ensemble */
-        }
-
-        .portfolio-container h1 {
-            margin: 0; /* supprime les marges par défaut */
-            font-size: 1.8rem;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
     <header>
@@ -78,7 +15,7 @@
         </div>
         <nav>
             <a href="#">Actualités</a>
-            <a href="/portfolio/">Portefeuille</a>
+            <a href="/portfolio/">Portefeuille du Club</a>
             <a href="/performance/">Performance</a>
             {% if user.is_authenticated %}
                 <a href="/profile/">{{ user.username }}</a>
@@ -89,7 +26,7 @@
     </header>
 
     <main>
-        <h1 class="portfolio-container">Portefeuille du Club</h1>
+        <h1 class="portfolio-title">Portefeuille du Club</h1>
         <table>
             <tr>
                 <th>Logo</th>
@@ -138,6 +75,9 @@
             </tr>
             {% endfor %}
         </table>
+            <footer>
+        LSM Investment Club 2025 ©. Tous droits réservés.
+    </footer>
     </main>
 </body>
 <script>

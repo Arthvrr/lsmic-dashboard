@@ -6,128 +6,7 @@
     <title>Mon Profil 👀 - LSM Investment Club</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f5f7;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center; /* centre horizontalement */
-            align-items: center;     /* centre verticalement */
-            height: 100vh;           /* prend toute la hauteur de la fenêtre */
-            padding: 0 20px;         /* padding horizontal pour mobiles */
-            box-sizing: border-box;
-        }
-
-        .profile-card {
-            width: 60%;               /* largeur 60% de l'écran */
-            max-width: 900px;         /* limite max pour les grands écrans */
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            display: flex;
-            gap: 40px;
-        }
-
-        /* Colonne gauche */
-        .left {
-            flex: 1;
-        }
-
-        h2 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-        }
-
-        p {
-            margin: 8px 0;
-            color: #374151;
-            font-size: 1rem;
-        }
-
-        /* Formulaires */
-        form {
-            margin-top: 20px;
-        }
-
-        label {
-            font-weight: 600;
-            color: #1f2937;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #d1d5db;
-            margin-top: 6px;
-            margin-bottom: 15px;
-            font-size: 1rem;
-        }
-
-        button {
-            background-color: #1E3A8A;
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        button:hover {
-            background-color: #274cb0;
-        }
-
-        /* Colonne droite */
-        .right {
-            flex: 1;
-            border-left: 1px solid #e5e7eb;
-            padding-left: 40px;
-        }
-
-        .back-link {
-            margin-top: 25px;
-            display: inline-block;
-            text-decoration: none;
-            color: #1E3A8A;
-            font-weight: 600;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 22.5%;
-            background-color: #1E3A8A;
-            color: white;
-        }
-
-        header a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            margin-left: 20px;
-        }
-
-        header a:hover {
-            text-decoration: underline;
-        }
-        .back-center {
-            display: block;
-            margin: 25px auto 0 auto; /* top margin + centrer horizontalement */
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 
 <body>
@@ -137,7 +16,7 @@
         </div>
         <nav>
             <a href="#">Actualités</a>
-            <a href="/portfolio/">Portefeuille</a>
+            <a href="/portfolio/">Portefeuille du Club</a>
             <a href="/performance/">Performance</a>
             {% if user.is_authenticated %}
                 <a href="/profile/">{{ user.username }}</a>
@@ -169,7 +48,7 @@
                     <button type="submit">Mettre à jour</button>
                 </form>
 
-                <a href="/" class="back-link back-center">⬅ Retour</a>
+                <!-- <a href="/" class="back-link back-center">⬅ Retour</a> -->
             </div>
 
             <!-- COLONNE DROITE -->
@@ -192,6 +71,10 @@
 
         </div>
     </div>
+
+    <footer>
+        LSM Investment Club 2025 ©. Tous droits réservés.
+    </footer>
 
 </body>
 </html>

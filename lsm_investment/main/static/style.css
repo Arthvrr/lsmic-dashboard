@@ -1,0 +1,220 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #f4f5f7;
+    color: #1f2937;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 20%;
+    background-color: #1E3A8A;
+    color: white;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 20px;
+}
+
+header a:hover {
+    text-decoration: underline;
+}
+
+/* Containers */
+.main-container,
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    min-height: 80vh; /* centrage vertical */
+}
+
+/* Cards profile / performance */
+.profile-card,
+.performance-card {
+    width: 60%;
+    max-width: 900px;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    box-sizing: border-box;
+}
+
+.performance-card {
+    flex-direction: column;
+    text-align: center;
+}
+
+.left,
+.right {
+    flex: 1;
+}
+
+.right {
+    border-left: 1px solid #e5e7eb;
+    padding-left: 40px;
+}
+
+/* Titres et textes */
+h1, h2, h3 {
+    margin: 0 0 15px 0;
+    color: #1E3A8A;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.4rem; }
+
+p {
+    margin: 8px 0;
+    color: #374151;
+    font-size: 1rem;
+}
+
+p strong {
+    color: #111827;
+}
+
+/* Forms */
+form {
+    margin-top: 20px;
+}
+
+label {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    margin-top: 6px;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #1E3A8A;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+button:hover {
+    background-color: #274cb0;
+}
+
+/* Back links */
+.back-link {
+    display: inline-block;
+    margin-top: 25px;
+    text-decoration: none;
+    color: #1E3A8A;
+    font-weight: 600;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.back-center {
+    display: block;
+    margin: 25px auto 0 auto;
+    text-align: center;
+}
+
+/* Tables */
+table { 
+    width: 60%;
+    margin: 20px auto;
+    border-collapse: collapse; 
+    background: white; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+    border-radius: 8px; 
+    overflow: hidden; 
+}
+
+th, td { 
+    padding: 12px; 
+    text-align: left; 
+    border-bottom: 1px solid #ddd; 
+    height: 60px;
+    vertical-align: middle;
+}
+
+th { 
+    background-color: #1E3A8A; 
+    color: white; 
+}
+
+td img { 
+    width: 40px; 
+    height: 40px; 
+    object-fit: contain; 
+    vertical-align: middle;
+}
+
+/* Home page */
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 80px);
+    text-align: center;
+}
+
+.portfolio-title {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 2rem;
+    color: #1E3A8A;
+    font-weight: 700;
+}
+
+footer {
+    color:#1E3A8A;
+    text-align: center;
+    padding: 25px;
+}
+
+
+/* Responsive */
+@media (max-width: 900px) {
+    .profile-card,
+    .performance-card {
+        width: 90%;
+        flex-direction: column;
+    }
+
+    .right {
+        border-left: none;
+        padding-left: 0;
+    }
+
+    header {
+        padding: 15px 10%;
+    }
+
+    table { width: 90%; }
+}
