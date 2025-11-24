@@ -11,19 +11,20 @@
 
 <body>
     <header>
-        <div class="logo">
+        <div class="header-left">
+            <img src="{% static 'logo-lsmic.png' %}" alt="Logo LSMIC">
             <a href="{% url 'home' %}">LSM Investment Club</a>
         </div>
-        <nav>
+        <div class="header-right">
             <a href="#">Actualités</a>
-            <a href="/portfolio/">Portefeuille du Club</a>
+            <a href="/portfolio/">Portefeuille</a>
             <a href="/performance/">Performance</a>
             {% if user.is_authenticated %}
                 <a href="/profile/">{{ user.username }}</a>
             {% else %}
                 <a href="/login/">Login</a>
             {% endif %}
-        </nav>
+        </div>
     </header>
 
     <div class="container">

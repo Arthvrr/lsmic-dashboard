@@ -6,28 +6,46 @@ body {
     color: #1f2937;
 }
 
-/* Header */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 25px 20%;
+    padding: 15px 20%;
     background-color: #1E3A8A;
     color: white;
 }
 
-header a {
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-left img {
+    width: 50px;
+    height: auto;
+}
+
+.header-left a {
+    font-size: 1.25rem;
+    margin: 0;
+    color:white;
+    font-weight: bolder;
+    text-decoration: none;
+}
+
+.header-right a {
     color: white;
     text-decoration: none;
     font-weight: 600;
     margin-left: 20px;
+    font-size: 1rem;
 }
 
-header a:hover {
+.header-right a:hover {
     text-decoration: underline;
 }
 
-/* Containers */
 .main-container,
 .container {
     display: flex;
