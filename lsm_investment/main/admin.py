@@ -6,8 +6,6 @@ from .models import Position, AdminEmail
 from django.contrib.auth import get_user_model
 import os
 
-print(os.getenv("SMTP_PASSWORD"))
-
 User = get_user_model()
 
 @admin.register(Position)
