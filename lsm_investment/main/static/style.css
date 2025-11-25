@@ -263,6 +263,23 @@ footer {
     padding: 25px;
 }
 
+
+.delete-btn {
+    background-color: #e53e3e; /* rouge */
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+}
+
+.delete-btn:hover {
+    background-color: #c53030;
+}
+
 /* Responsive tweaks */
 @media (max-width: 900px) {
     header { padding: 15px 10%; }

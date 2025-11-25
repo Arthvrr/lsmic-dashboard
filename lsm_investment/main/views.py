@@ -88,6 +88,9 @@ def profile_view(request):
             sub.save()
             messages.success(request, "Préférences newsletter mises à jour !")
             return redirect("profile")
+        
+        elif action == "delete_account":
+            return redirect("confirm_delete")
 
     return render(request, "profile.html", {"subscribed": subscribed})
 
@@ -144,9 +147,6 @@ def portfolio_view(request):
             'logo': pos.logo,
         })
 
-    # return render(request, 'portfolio.html', {'data': data})
-
-    # après avoir construit `data` (liste de dicts)
     tickers = [d['ticker'] for d in data]
     values = [d['total_value'] if d['total_value'] is not None else 0 for d in data]
     roi_percents = [d['roi_percent'] if d['roi_percent'] is not None else 0 for d in data]
@@ -176,3 +176,24 @@ def performance_view(request):
     }
 
     return render(request, 'performance.html', context)
+
+
+def confirm_delete_view(request):
+    """Affiche un formulaire de re-connexion avant suppression."""
+
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(request, username=username, password=password)
+
+        if user and user == request.user:
+            user.delete()
+            logout(request)
+            messages.success(request, "Votre compte a bien été supprimé.")
+            return redirect("home")
+
+        else:
+            messages.error(request, "Identifiants incorrects.")
+
+    return render(request, "confirm_delete.html")
