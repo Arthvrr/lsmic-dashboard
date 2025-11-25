@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header>
@@ -28,6 +29,19 @@
 
     <main>
         <h1 class="portfolio-title">Portefeuille du Club</h1>
+
+        <div class="charts-container">
+            <div class="chart-card">
+                <h3>Répartition (valeur)</h3>
+                <canvas id="donutChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>ROI (%) par position</h3>
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
+        
         <table>
             <tr>
                 <th>Logo</th>
@@ -79,6 +93,10 @@
             <footer>
         LSM Investment Club 2025 ©. Tous droits réservés.
     </footer>
+    {# JSON data injection - utilisez json_script et parsez côté JS #}
+    {{ tickers|json_script:"tickers" }}
+    {{ values|json_script:"values" }}
+    {{ roipercents|json_script:"roipercents" }}
     </main>
 </body>
 <script>
@@ -133,5 +151,65 @@ document.querySelectorAll("th").forEach((th, idx) => {
     th.style.cursor = "pointer"; // montre que c'est cliquable
     th.addEventListener("click", () => sortTable(idx));
 });
+
+// Récupérer les données JSON correctement
+const tickers = JSON.parse(document.getElementById('tickers').textContent);
+const values = JSON.parse(document.getElementById('values').textContent);
+const roiPercents = JSON.parse(document.getElementById('roipercents').textContent);
+
+// Donut chart (allocation)
+const donutCtx = document.getElementById('donutChart').getContext('2d');
+const donutChart = new Chart(donutCtx, {
+    type: 'doughnut',
+    data: {
+        labels: tickers,
+        datasets: [{
+            data: values,
+            borderWidth: 0.5
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio:false,
+        plugins: {
+            legend: { position: 'bottom' }
+        },
+        layout: {
+            padding: { bottom: 20 }
+        }
+    }
+});
+
+const barColors = roiPercents.map(v => v >= 0 ? 'rgba(34, 197, 94, 0.7)' : 'rgba(239, 68, 68, 0.7)');
+const barCtx = document.getElementById('barChart').getContext('2d');
+const barChart = new Chart(barCtx, {
+    type: 'bar',
+    data: {
+        labels: tickers,
+        datasets: [{
+            label: 'ROI %',
+            data: roiPercents,
+            borderWidth: 1,
+            backgroundColor: barColors,  // <- couleur selon valeur
+            borderColor: barColors.map(c => c.replace('0.7','1')), // bordure plus foncée
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio:false,
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { callback: function(v){ return v + '%'; } }
+            }
+        },
+        plugins: {
+            legend: { display: false }
+        },
+        layout: { padding: { bottom: 20 } }
+    }
+});
+
+
 </script>
 </html>

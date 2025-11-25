@@ -144,7 +144,20 @@ def portfolio_view(request):
             'logo': pos.logo,
         })
 
-    return render(request, 'portfolio.html', {'data': data})
+    # return render(request, 'portfolio.html', {'data': data})
+
+    # après avoir construit `data` (liste de dicts)
+    tickers = [d['ticker'] for d in data]
+    values = [d['total_value'] if d['total_value'] is not None else 0 for d in data]
+    roi_percents = [d['roi_percent'] if d['roi_percent'] is not None else 0 for d in data]
+
+    return render(request, 'portfolio.html', {
+        'data': data,
+        'tickers': tickers,
+        'values': values,
+        'roipercents': roi_percents,
+    })
+
 
 @login_required
 def performance_view(request):

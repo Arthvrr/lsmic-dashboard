@@ -46,17 +46,6 @@ header {
     text-decoration: underline;
 }
 
-.main-container,
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
-    min-height: 80vh; /* centrage vertical */
-}
-
-/* Cards profile / performance */
 .profile-card,
 .performance-card {
     width: 60%;
@@ -192,14 +181,12 @@ td img {
     vertical-align: middle;
 }
 
-/* Home page */
 main {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    height: calc(100vh - 80px);
     text-align: center;
+    padding-top: 30px;
 }
 
 .portfolio-title {
@@ -215,6 +202,37 @@ footer {
     text-align: center;
     padding: 25px;
 }
+
+
+.charts-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;  
+    width: 100%;
+    gap: 25px;             
+    margin-bottom: 30px;
+}
+
+.chart-card {
+    width: 57%;           
+    /* max-width: 1200px; */
+    height: 400px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    text-align: center;
+    margin: 0 auto;
+}
+
+.chart-card canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+
+
+
 
 
 /* Responsive */
