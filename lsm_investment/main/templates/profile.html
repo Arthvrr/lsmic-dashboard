@@ -26,51 +26,8 @@
             {% endif %}
         </div>
     </header>
-    <!-- <div class="container">
-        <div class="profile-card">
 
-            <div class="left">
-
-                <p><strong>Email :</strong> {{ request.user.email }}</p>
-                <p><strong>Membre depuis :</strong> {{ request.user.date_joined|date:"d/m/Y" }}</p>
-
-                <h3>Modifier mon nom d'utilisateur</h3>
-
-                <form method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="action" value="update_username">
-
-                    <label>Nouveau nom d'utilisateur</label>
-                    <input type="text" name="new_username" value="{{ request.user.username }}" required>
-
-                    <button type="submit">Mettre à jour</button>
-                </form>
-
-            </div>
-
-            <div class="right">
-                <h3>Changer mon mot de passe</h3>
-
-                <form method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="action" value="change_password">
-
-                    <label>Nouveau mot de passe</label>
-                    <input type="password" name="new_password1" required>
-
-                    <label>Confirmer</label>
-                    <input type="password" name="new_password2" required>
-
-                    <button type="submit">Changer le mot de passe</button>
-                </form>
-            </div>
-
-        </div>
-    </div> -->
-
-
-    
-    <div class="container">
+    <main>
         <div class="profile-card">
 
             <!-- COLONNE GAUCHE -->
@@ -126,7 +83,7 @@
             </div>
 
         </div>
-    </div>
+    </main>
 
 
 
