@@ -6,6 +6,7 @@ from .models import Position, AdminEmail, NewsletterSubscriber
 from django.contrib.auth import get_user_model
 import os
 from dotenv import load_dotenv
+from pathlib import Path
 
 User = get_user_model()
 
