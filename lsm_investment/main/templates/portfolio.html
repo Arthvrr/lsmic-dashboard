@@ -40,6 +40,10 @@
                 <h3>ROI (%) par position</h3>
                 <canvas id="barChart"></canvas>
             </div>
+            <div class="chart-card">
+                <h3>Prix d'achat vs Prix actuel</h3>
+                <canvas id="lineChart"></canvas>
+            </div>
         </div>
         
         <table>
@@ -97,6 +101,8 @@
     {{ tickers|json_script:"tickers" }}
     {{ values|json_script:"values" }}
     {{ roipercents|json_script:"roipercents" }}
+    {{ purchase_prices|json_script:"purchase_prices" }}
+    {{ current_prices|json_script:"current_prices" }}
     </main>
 </body>
 <script>
@@ -210,6 +216,47 @@ const barChart = new Chart(barCtx, {
     }
 });
 
+
+const purchasePrices = JSON.parse(document.getElementById('purchase_prices').textContent);
+const currentPrices = JSON.parse(document.getElementById('current_prices').textContent);
+
+const lineCtx = document.getElementById('lineChart').getContext('2d');
+new Chart(lineCtx, {
+    type: 'line',
+    data: {
+        labels: tickers,
+        datasets: [
+            {
+                label: "Prix d'achat",
+                data: purchasePrices,
+                borderColor: 'rgba(239, 68, 68, 1)', // rouge pour prix d'achat
+                backgroundColor: 'rgba(239, 68, 68, 0.2)', // zone remplie semi-transparente
+                borderWidth: 2,
+                tension: 0.3,
+                fill:true,
+            },
+            {
+                label: "Prix actuel",
+                borderColor: 'rgba(37, 99, 235, 1)',      // bleu foncé pour la ligne
+                backgroundColor: 'rgba(37, 99, 235, 0.2)', // zone remplie semi-transparente
+                data: currentPrices,
+                borderWidth: 2,
+                tension: 0.3,
+                fill:true,
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { position: 'bottom' }
+        },
+        scales: {
+            y: { beginAtZero: false }
+        }
+    }
+});
 
 </script>
 </html>

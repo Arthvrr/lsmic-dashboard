@@ -149,6 +149,8 @@ def portfolio_view(request):
 
     tickers = [d['ticker'] for d in data]
     values = [d['total_value'] if d['total_value'] is not None else 0 for d in data]
+    purchase_prices = [d['purchase_price'] if d['purchase_price'] is not None else 0 for d in data]
+    current_prices = [d['current_price'] if d['current_price'] is not None else 0 for d in data]
     roi_percents = [d['roi_percent'] if d['roi_percent'] is not None else 0 for d in data]
 
     return render(request, 'portfolio.html', {
@@ -156,6 +158,8 @@ def portfolio_view(request):
         'tickers': tickers,
         'values': values,
         'roipercents': roi_percents,
+        'purchase_prices': purchase_prices,
+        'current_prices': current_prices,
     })
 
 
