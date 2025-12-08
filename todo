@@ -1,5 +1,7 @@
 - sécuriser le fait de créer un compte (membre et alumni)
 
+- ajouter confirmation emails création de compte
+
 
 - gérer le responsive téléphone
 - migrer l'envoi d'emails + app pythonanywhere sur l'email lsmiclub@gmail.com

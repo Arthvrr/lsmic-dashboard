@@ -9,7 +9,17 @@ import yfinance as yf
 def home(request):
     return render(request, 'home.html')
 
-# Page d'inscription
+def load_whitelist():
+    whitelist_path = os.path.join(settings.ROOT_DIR, "whitelist_emails.txt")
+    
+    try:
+        with open(whitelist_path, 'r') as f:
+            return {line.strip().lower() for line in f if line.strip()}
+    except FileNotFoundError:
+        print(f"ATTENTION: Fichier de liste blanche non trouvé à: {whitelist_path}")
+        return set()
+
+
 def register_view(request):
     if request.method == "POST":
         username = request.POST['username']
@@ -17,7 +27,12 @@ def register_view(request):
         password = request.POST['password']
         password2 = request.POST['password2']
 
-        if password != password2:
+        EMAIL_WHITELIST = load_whitelist()
+
+        if email not in EMAIL_WHITELIST:
+            messages.error(request, "Cet e-mail n'est pas autorisé à créer un compte.")
+
+        elif password != password2:
             messages.error(request, "Les mots de passe ne correspondent pas.")
         elif User.objects.filter(username=username).exists():
             messages.error(request, "Ce nom d'utilisateur existe déjà.")
@@ -31,7 +46,7 @@ def register_view(request):
 
     return render(request, 'register.html')
 
-# Page de connexion
+
 def login_view(request):
     if request.method == "POST":
         username = request.POST['username']
@@ -39,13 +54,13 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')  # redirige vers la page d'accueil
+            return redirect('home')
         else:
             messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
 
     return render(request, 'login.html')
 
-# Déconnexion
+
 def logout_view(request):
     logout(request)
     return redirect('login')
@@ -124,7 +139,6 @@ def portfolio_view(request):
     for pos in positions:
         stock = yf.Ticker(pos.ticker)
         try:
-            #current_price = stock.info.get('currentPrice')
             current_price = stock.info.get('regularMarketPrice') or stock.info.get('currentPrice') or stock.info.get('previousClose')
         except:
             current_price = None
