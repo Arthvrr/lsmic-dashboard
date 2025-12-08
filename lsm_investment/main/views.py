@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Position, NewsletterSubscriber
 import yfinance as yf
+import os
 
 def home(request):
     return render(request, 'home.html')
