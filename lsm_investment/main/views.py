@@ -28,13 +28,14 @@ def load_whitelist():
 def register_view(request):
     if request.method == "POST":
         username = request.POST['username']
-        email = request.POST['email']
+        email = request.POST['email'].lower()
         password = request.POST['password']
         password2 = request.POST['password2']
 
         EMAIL_WHITELIST = load_whitelist()
 
         if email not in EMAIL_WHITELIST:
+            print(f"DEBUG: E-mail bloqué: '{email}'")
             messages.error(request, "Cet e-mail n'est pas autorisé à créer un compte.")
 
         elif password != password2:
