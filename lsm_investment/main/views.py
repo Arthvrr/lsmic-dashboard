@@ -14,8 +14,8 @@ def home(request):
 
 def load_whitelist():
 
-    ROOT_DIR = settings.BASE_DIR.parent.parent 
-    whitelist_path = ROOT_DIR / "whitelist_emails.txt"
+    ABSOLUTE_PROJECT_ROOT = Path("/home/Arthvrrr/lsmic-dashboard")
+    whitelist_path = ABSOLUTE_PROJECT_ROOT / "whitelist_emails.txt"
     
     try:
         with open(str(whitelist_path), 'r') as f: 
