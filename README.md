@@ -57,3 +57,10 @@ La dernière étape est obligatoire pour forcer le serveur à charger le nouveau
 * **Redémarrer l'Application** :
     1.  Aller à l'onglet **Web** de votre tableau de bord PythonAnywhere.
     2.  Cliquer sur le bouton vert **Reload** (Recharger).
+
+## 🏠 Lancement du Projet en local
+
+    ```bash
+    cd lsm_investment
+    python manage.py runserver
+    ```

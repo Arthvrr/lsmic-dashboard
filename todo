@@ -1,5 +1,6 @@
-- graphes du portefeuille (donut, perf,...)
-- compléter les db
-- dark mode (en fonction de l'user)
+- régler pb d'envoi d'emails
+- sécuriser le fait de créer un compte (membre et alumni)
 
---> publier via pythonanywhere
+
+- gérer le responsive téléphone
+- migrer l'envoi d'emails + app pythonanywhere sur l'email lsmiclub@gmail.com
