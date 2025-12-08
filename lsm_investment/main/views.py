@@ -18,7 +18,7 @@ def load_whitelist():
     whitelist_path = ROOT_DIR / "whitelist_emails.txt"
     
     try:
-        with open(whitelist_path, 'r') as f:
+        with open(str(whitelist_path), 'r') as f: 
             return {line.strip().lower() for line in f if line.strip()}
     except FileNotFoundError:
         print(f"ATTENTION: Fichier de liste blanche non trouvé à: {whitelist_path}")
