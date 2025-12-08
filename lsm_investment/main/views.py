@@ -6,12 +6,16 @@ from django.contrib.auth.decorators import login_required
 from .models import Position, NewsletterSubscriber
 import yfinance as yf
 import os
+from django.conf import settings
+from pathlib import Path
 
 def home(request):
     return render(request, 'home.html')
 
 def load_whitelist():
-    whitelist_path = os.path.join(settings.ROOT_DIR, "whitelist_emails.txt")
+
+    ROOT_DIR = settings.BASE_DIR.parent.parent 
+    whitelist_path = ROOT_DIR / "whitelist_emails.txt"
     
     try:
         with open(whitelist_path, 'r') as f:
