@@ -27,7 +27,7 @@ Ces commandes doivent être exécutées dans votre console **Bash** pour récup�
 | Étape | Commande | Description |
 | :--- | :--- | :--- |
 | **Activer l'Environnement** | `workon mon-env-final` | Active l'environnement virtuel où Django est installé. |
-| **Se positionner** | `cd lsmic-dashboard/lsm_investment` | Se déplace dans le répertoire de l'application qui contient le fichier `manage.py`. |
+| **Se positionner** | `cd lsmic-dashboard` | Se déplace dans le répertoire de l'application qui contient le fichier `manage.py`. |
 | **Récupérer les Changements** | `git pull` | Télécharge le dernier code de la branche Git vers le serveur. |
 
 ### 2. 🛠️ Mise à Jour du Système Django
