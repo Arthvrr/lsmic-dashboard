@@ -17,7 +17,6 @@ from django.urls import reverse_lazy
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
-#load_dotenv(ROOT_DIR / "login.env")
 
 EMAIL_HOST_USER = os.getenv("SMTP_USER")
 EMAIL_HOST_PASSWORD = os.getenv("SMTP_PASSWORD")

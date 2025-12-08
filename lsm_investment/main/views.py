@@ -116,6 +116,7 @@ def update_password_view(request):
 
     return redirect("profile")
 
+@login_required
 def portfolio_view(request):
     positions = Position.objects.all()
     data = []
