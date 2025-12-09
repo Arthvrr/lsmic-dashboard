@@ -29,10 +29,15 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-*t$#4%jh1_y1%*ua2=p%1@b4tfd9iz94ap$bv2wzilx941rni#'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+IS_PRODUCTION = os.getenv("IS_PRODUCTION", "False").lower() == "true"
 
-ALLOWED_HOSTS = ['Arthvrrr.eu.pythonanywhere.com']
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = not IS_PRODUCTION
+
+if IS_PRODUCTION:
+    ALLOWED_HOSTS = ['Arthvrrr.eu.pythonanywhere.com']
+else:
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '[::1]']
 
 
 # Application definition
