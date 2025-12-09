@@ -279,18 +279,19 @@ footer {
     background-color: #c53030;
 }
 
+
 .weekly-ranking-container {
     display: flex;
-    gap: 40px; /* Espace entre le top et le flop */
-    justify-content: center; /* Centrer l'ensemble des cartes */
-    width: 100%; /* Prend toute la largeur disponible */
-    margin-top: 30px;
-    margin-bottom: 50px;
+    gap: 40px;
+    justify-content: center;
+    max-width: 900px; 
+    width: 90%;
+    margin: 30px auto 50px auto;
 }
 
 
 .ranking-card {
-    flex: 1;
+    flex: 1 1 50%; 
     max-width: 400px;
     padding: 20px;
     border: 1px solid #d1d5db;
