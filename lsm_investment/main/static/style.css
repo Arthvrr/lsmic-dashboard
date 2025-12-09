@@ -282,28 +282,24 @@ footer {
 
 .weekly-ranking-container {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    max-width: 900px;
-    width: 90%;
-    margin: 30px auto 50px auto;
+    gap: 40px;
+    justify-content: center;
+    
+    max-width: 900px; 
+    width: 90%; 
+    margin: 30px auto 50px auto; 
 }
 
+
 .ranking-card {
-    width: 45%;
+    flex: 1 1 50%; 
+    max-width: 400px;
     padding: 20px;
     border: 1px solid #d1d5db;
     border-radius: 10px;
     background-color: white;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-.top3 {
     text-align: left;
-}
-
-.flop3 {
-    text-align: right;
 }
 
 .ranking-card h3 {
@@ -329,6 +325,9 @@ footer {
     border-bottom: none;
 }
 
+.tagline {
+    margin-bottom: 100px;
+}
 
 @media (max-width: 900px) {
     header { padding: 15px 10%; }
