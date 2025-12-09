@@ -29,6 +29,29 @@
     <main>
         <h1>Bienvenue sur le site du LSM Investment Club !</h1>
         <p>Where students turn passion for finance into practice.</p>
+        <div class="weekly-ranking-container">
+            <div class="ranking-card top3">
+                <h3>🏆 Top 3 de la semaine</h3>
+                <ul>
+                {% for item in top3 %}
+                    <li>{{ item.ticker }} : 
+                        <span style="color: green;">+{{ item.roi_percent|floatformat:2 }}%</span>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+            
+            <div class="ranking-card flop3">
+                <h3>📉 Flop 3 de la semaine</h3>
+                <ul>
+                {% for item in flop3 %}
+                    <li>{{ item.ticker }} : 
+                        <span style="color: red;">{{ item.roi_percent|floatformat:2 }}%</span>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
     </main>
     <footer>
         LSM Investment Club 2025 ©. Tous droits réservés.

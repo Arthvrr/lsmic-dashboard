@@ -8,9 +8,66 @@ import yfinance as yf
 import os
 from django.conf import settings
 from pathlib import Path
+from datetime import datetime, timedelta
+import pandas as pd
+
+def get_last_monday():
+    """Calcule la date du dernier lundi (début de la semaine de trading)."""
+    today = datetime.now().date()
+    # 0 = Lundi, 1 = Mardi, ... 6 = Dimanche
+    days_to_subtract = today.weekday() 
+    return today - timedelta(days=days_to_subtract)
+
+# def home(request):
+#     return render(request, 'home.html')
 
 def home(request):
-    return render(request, 'home.html')
+    top_flop_data = []
+    
+    # --- 1. Préparation des données ---
+    positions = Position.objects.all()
+    monday_date = get_last_monday()
+    
+    for pos in positions:
+        stock = yf.Ticker(pos.ticker)
+        
+        try:
+            # Récupération des données historiques depuis le dernier lundi
+            hist_data = stock.history(start=monday_date)
+            
+            # Prix de clôture du Lundi (ou de la première journée de trading de la semaine)
+            start_price = hist_data['Close'].iloc[0] if not hist_data.empty else None
+            
+            # Prix actuel
+            current_price = stock.info.get('regularMarketPrice') or stock.info.get('currentPrice') or stock.info.get('previousClose')
+            
+            if start_price and current_price:
+                # Calcul du ROI en pourcentage (%)
+                weekly_roi_percent = ((current_price - start_price) / start_price) * 100
+            else:
+                weekly_roi_percent = 0
+                
+        except Exception as e:
+            print(f"Erreur pour le ticker {pos.ticker}: {e}")
+            weekly_roi_percent = 0
+            
+        top_flop_data.append({
+            'ticker': pos.ticker,
+            'roi_percent': weekly_roi_percent,
+        })
+
+    # --- 2. Trier pour obtenir le TOP 3 et FLOP 3 ---
+    
+    # Trier la liste par ROI en pourcentage (du plus grand au plus petit)
+    sorted_data = sorted(top_flop_data, key=lambda x: x['roi_percent'], reverse=True)
+    
+    top3 = sorted_data[:3]
+    flop3 = sorted_data[-3:]
+    
+    return render(request, 'home.html', {
+        'top3': top3,
+        'flop3': flop3,
+    })
 
 def load_whitelist():
 
