@@ -279,53 +279,6 @@ footer {
     background-color: #c53030;
 }
 
-
-.weekly-ranking-container {
-    padding-top: 100px;
-    display: flex;
-    gap: 40px;
-    justify-content: center;
-    
-    max-width: 900px; 
-    width: 90%; 
-    margin: 30px auto 50px auto; 
-}
-
-
-.ranking-card {
-    flex: 1 1 50%; 
-    max-width: 400px;
-    padding: 20px;
-    border: 1px solid #d1d5db;
-    border-radius: 10px;
-    background-color: white;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    text-align: left;
-}
-
-.ranking-card h3 {
-    text-align: center;
-    margin-bottom: 15px;
-    font-size: 1.3rem;
-}
-
-.ranking-card ul {
-    list-style: none;
-    padding: 0;
-}
-
-.ranking-card li {
-    padding: 10px 0;
-    border-bottom: 1px dashed #eee;
-    display: flex;
-    justify-content: space-between;
-    font-weight: 500;
-}
-
-.ranking-card li:last-child {
-    border-bottom: none;
-}
-
 @media (max-width: 900px) {
     header { padding: 15px 10%; }
 
