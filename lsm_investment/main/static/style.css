@@ -281,6 +281,7 @@ footer {
 
 
 .weekly-ranking-container {
+    padding-top: 100px;
     display: flex;
     gap: 40px;
     justify-content: center;
@@ -323,10 +324,6 @@ footer {
 
 .ranking-card li:last-child {
     border-bottom: none;
-}
-
-.tagline {
-    margin-bottom: 100px;
 }
 
 @media (max-width: 900px) {
