@@ -279,6 +279,25 @@ footer {
     background-color: #c53030;
 }
 
+.weekly-ranking-container {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+}
+
+.ranking-card {
+    flex: 1;
+    max-width: 400px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.ranking-card h3 {
+    white-space: nowrap;
+    text-align: center;
+}
+
 @media (max-width: 900px) {
     header { padding: 15px 10%; }
 

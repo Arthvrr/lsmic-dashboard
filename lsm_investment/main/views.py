@@ -63,6 +63,8 @@ def home(request):
     
     top3 = sorted_data[:3]
     flop3 = sorted_data[-3:]
+
+    flop3 = list(reversed(flop3_brut)) #reverse la liste
     
     return render(request, 'home.html', {
         'top3': top3,
