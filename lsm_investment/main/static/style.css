@@ -280,7 +280,9 @@ footer {
     background-color: #c53030;
 }
 
-/* Responsive tweaks */
+
+
+
 @media (max-width: 900px) {
     header { padding: 15px 10%; }
 
