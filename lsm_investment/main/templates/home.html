@@ -29,8 +29,9 @@
     <main>
         <h1>Bienvenue sur le site du LSM Investment Club !</h1>
         <p>Where students turn passion for finance into practice.</p>
-        <div class="weekly-ranking-container">
-            <div class="ranking-card top3">
+        <div class="weekly-ranking-container" style="display: flex; gap: 40px; justify-content: center;">
+            
+            <div class="ranking-card top3" style="flex: 1; max-width: 400px; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
                 <h3>🏆 Top 3 de la semaine</h3>
                 <ul>
                 {% for item in top3 %}
@@ -41,7 +42,7 @@
                 </ul>
             </div>
             
-            <div class="ranking-card flop3">
+            <div class="ranking-card flop3" style="flex: 1; max-width: 400px; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
                 <h3>📉 Flop 3 de la semaine</h3>
                 <ul>
                 {% for item in flop3 %}
