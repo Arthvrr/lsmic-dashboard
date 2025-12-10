@@ -202,7 +202,21 @@ def portfolio_view(request):
     data = []
 
     for pos in positions:
+        
         stock = yf.Ticker(pos.ticker)
+
+
+        company_name = stock.info.get('longName')
+        
+        # Si le nom est trouvé et n'est pas déjà enregistré dans la DB, on l'enregistre
+        if company_name and pos.company_name != company_name:
+            pos.company_name = company_name
+            pos.save() # Sauvegarde le nom dans la DB
+        
+        # Si le nom n'a pas été trouvé via yfinance mais existe dans la DB, on le récupère
+        elif not company_name and pos.company_name:
+            company_name = pos.company_name
+
         try:
             current_price = stock.info.get('regularMarketPrice') or stock.info.get('currentPrice') or stock.info.get('previousClose')
         except:
@@ -218,6 +232,7 @@ def portfolio_view(request):
 
         data.append({
             'ticker': pos.ticker,
+            'company_name': company_name,
             'shares': pos.shares,
             'purchase_price': pos.purchase_price,
             'current_price': current_price,

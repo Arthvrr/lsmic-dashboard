@@ -64,7 +64,7 @@
                         <img src="{{ p.logo.url }}" alt="{{ p.ticker }}" width="40" style="vertical-align: middle; margin-right: 8px;">
                     {% endif %}
                 </td>
-                <td>{{ p.ticker }}</td>
+                <td title="{{ p.company_name }}">{{ p.ticker }}</td>
                 <td>{{ p.shares }}</td>
                 <td>{% if p.purchase_price %}{{ p.purchase_price }}{% else %}-{% endif %}</td>
                 <td>{% if p.current_price %}{{ p.current_price }}{% else %}-{% endif %}</td>
