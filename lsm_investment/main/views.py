@@ -201,28 +201,36 @@ def update_password_view(request):
 #     positions = Position.objects.all()
 #     data = []
 
+#     # --- 1. Initialisation des variables pour le TOTAL ---
+#     portfolio_total_invested = 0.0
+#     portfolio_total_value = 0.0
+
 #     for pos in positions:
-        
 #         stock = yf.Ticker(pos.ticker)
-
-
-#         company_name = stock.info.get('longName')
         
-#         # Si le nom est trouvé et n'est pas déjà enregistré dans la DB, on l'enregistre
+#         # ... (Logique existante pour company_name inchangée) ...
+#         company_name = stock.info.get('longName')
 #         if company_name and pos.company_name != company_name:
 #             pos.company_name = company_name
-#             pos.save() # Sauvegarde le nom dans la DB
-        
-#         # Si le nom n'a pas été trouvé via yfinance mais existe dans la DB, on le récupère
+#             pos.save()
 #         elif not company_name and pos.company_name:
 #             company_name = pos.company_name
+#         # ... 
 
 #         try:
 #             current_price = stock.info.get('regularMarketPrice') or stock.info.get('currentPrice') or stock.info.get('previousClose')
 #         except:
 #             current_price = None
 
-#         total_value = current_price * pos.shares if current_price else None
+#         # Calculs individuels
+#         invested_value = pos.purchase_price * pos.shares if pos.purchase_price else 0
+#         total_value = current_price * pos.shares if current_price else 0
+
+#         # --- 2. Agrégation des totaux ---
+#         portfolio_total_invested += invested_value
+#         portfolio_total_value += total_value
+
+#         # Calculs ROI individuels (inchangés pour la liste data)
 #         if pos.purchase_price and current_price:
 #             roi_value = (current_price - pos.purchase_price) * pos.shares
 #             roi_percent = ((current_price - pos.purchase_price) / pos.purchase_price) * 100
@@ -236,12 +244,21 @@ def update_password_view(request):
 #             'shares': pos.shares,
 #             'purchase_price': pos.purchase_price,
 #             'current_price': current_price,
-#             'total_value': total_value,
+#             'total_value': total_value if current_price else None, # Garder None pour l'affichage individuel si pas de prix
 #             'roi_value': roi_value,
 #             'roi_percent': roi_percent,
 #             'logo': pos.logo,
 #         })
 
+#     # --- 3. Calcul du ROI Global ---
+#     portfolio_roi_value = portfolio_total_value - portfolio_total_invested
+    
+#     if portfolio_total_invested > 0:
+#         portfolio_roi_percent = (portfolio_roi_value / portfolio_total_invested) * 100
+#     else:
+#         portfolio_roi_percent = 0
+
+#     # ... (Préparation des données pour les graphiques inchangée) ...
 #     tickers = [d['ticker'] for d in data]
 #     values = [d['total_value'] if d['total_value'] is not None else 0 for d in data]
 #     purchase_prices = [d['purchase_price'] if d['purchase_price'] is not None else 0 for d in data]
@@ -250,6 +267,12 @@ def update_password_view(request):
 
 #     return render(request, 'portfolio.html', {
 #         'data': data,
+#         # --- 4. Passer les totaux au template ---
+#         'portfolio_total_invested': portfolio_total_invested,
+#         'portfolio_total_value': portfolio_total_value,
+#         'portfolio_roi_value': portfolio_roi_value,
+#         'portfolio_roi_percent': portfolio_roi_percent,
+#         # ----------------------------------------
 #         'tickers': tickers,
 #         'values': values,
 #         'roipercents': roi_percents,
@@ -257,41 +280,82 @@ def update_password_view(request):
 #         'current_prices': current_prices,
 #     })
 
+# Fichier : main/views.py
+
 @login_required
 def portfolio_view(request):
     positions = Position.objects.all()
     data = []
 
-    # --- 1. Initialisation des variables pour le TOTAL ---
+    # Variables pour les totaux globaux
     portfolio_total_invested = 0.0
     portfolio_total_value = 0.0
 
+    # Dictionnaires pour l'agrégation (ex: {'Technology': 5000, 'Health': 2000})
+    sector_allocation = {}
+    country_allocation = {}
+
     for pos in positions:
         stock = yf.Ticker(pos.ticker)
+        stock_info = stock.info
+
+        # --- 1. MISE À JOUR DES INFO (Nom, Secteur, Pays) ---
+        needs_save = False
         
-        # ... (Logique existante pour company_name inchangée) ...
-        company_name = stock.info.get('longName')
-        if company_name and pos.company_name != company_name:
-            pos.company_name = company_name
+        # Nom
+        c_name = stock_info.get('longName')
+        if c_name and pos.company_name != c_name:
+            pos.company_name = c_name
+            needs_save = True
+        
+        # Secteur
+        c_sector = stock_info.get('sector', 'Autre') # 'Autre' si non trouvé
+        if c_sector and pos.sector != c_sector:
+            pos.sector = c_sector
+            needs_save = True
+            
+        # Pays
+        c_country = stock_info.get('country', 'Autre')
+        if c_country and pos.country != c_country:
+            pos.country = c_country
+            needs_save = True
+            
+        if needs_save:
             pos.save()
-        elif not company_name and pos.company_name:
-            company_name = pos.company_name
-        # ... 
+        
+        # Utiliser les valeurs de la DB si yfinance échoue, sinon la valeur récupérée
+        final_sector = pos.sector if pos.sector else 'Autre'
+        final_country = pos.country if pos.country else 'Autre'
+        # ----------------------------------------------------
 
         try:
-            current_price = stock.info.get('regularMarketPrice') or stock.info.get('currentPrice') or stock.info.get('previousClose')
+            current_price = stock_info.get('regularMarketPrice') or stock_info.get('currentPrice') or stock_info.get('previousClose')
         except:
             current_price = None
 
-        # Calculs individuels
+        # Calculs
         invested_value = pos.purchase_price * pos.shares if pos.purchase_price else 0
         total_value = current_price * pos.shares if current_price else 0
 
-        # --- 2. Agrégation des totaux ---
+        # Totaux globaux
         portfolio_total_invested += invested_value
         portfolio_total_value += total_value
 
-        # Calculs ROI individuels (inchangés pour la liste data)
+        # --- 2. AGRÉGATION POUR LES GRAPHIQUES ---
+        # On ajoute la valeur actuelle au secteur correspondant
+        if final_sector in sector_allocation:
+            sector_allocation[final_sector] += total_value
+        else:
+            sector_allocation[final_sector] = total_value
+
+        # On ajoute la valeur actuelle au pays correspondant
+        if final_country in country_allocation:
+            country_allocation[final_country] += total_value
+        else:
+            country_allocation[final_country] = total_value
+        # -----------------------------------------
+
+        # ROI Calc (identique à avant)
         if pos.purchase_price and current_price:
             roi_value = (current_price - pos.purchase_price) * pos.shares
             roi_percent = ((current_price - pos.purchase_price) / pos.purchase_price) * 100
@@ -301,25 +365,23 @@ def portfolio_view(request):
 
         data.append({
             'ticker': pos.ticker,
-            'company_name': company_name,
+            'company_name': pos.company_name,
+            'sector': final_sector, # Utile si on veut l'afficher dans le tableau plus tard
+            'country': final_country,
             'shares': pos.shares,
             'purchase_price': pos.purchase_price,
             'current_price': current_price,
-            'total_value': total_value if current_price else None, # Garder None pour l'affichage individuel si pas de prix
+            'total_value': total_value if current_price else None,
             'roi_value': roi_value,
             'roi_percent': roi_percent,
             'logo': pos.logo,
         })
 
-    # --- 3. Calcul du ROI Global ---
+    # Calcul ROI Global
     portfolio_roi_value = portfolio_total_value - portfolio_total_invested
-    
-    if portfolio_total_invested > 0:
-        portfolio_roi_percent = (portfolio_roi_value / portfolio_total_invested) * 100
-    else:
-        portfolio_roi_percent = 0
+    portfolio_roi_percent = (portfolio_roi_value / portfolio_total_invested * 100) if portfolio_total_invested > 0 else 0
 
-    # ... (Préparation des données pour les graphiques inchangée) ...
+    # Préparation des listes simples pour les graphiques existants
     tickers = [d['ticker'] for d in data]
     values = [d['total_value'] if d['total_value'] is not None else 0 for d in data]
     purchase_prices = [d['purchase_price'] if d['purchase_price'] is not None else 0 for d in data]
@@ -328,19 +390,24 @@ def portfolio_view(request):
 
     return render(request, 'portfolio.html', {
         'data': data,
-        # --- 4. Passer les totaux au template ---
         'portfolio_total_invested': portfolio_total_invested,
         'portfolio_total_value': portfolio_total_value,
         'portfolio_roi_value': portfolio_roi_value,
         'portfolio_roi_percent': portfolio_roi_percent,
-        # ----------------------------------------
+        
+        # Données existantes
         'tickers': tickers,
         'values': values,
         'roipercents': roi_percents,
         'purchase_prices': purchase_prices,
         'current_prices': current_prices,
-    })
 
+        # --- NOUVELLES DONNÉES POUR LES GRAPHIQUES ---
+        'sector_labels': list(sector_allocation.keys()),
+        'sector_values': list(sector_allocation.values()),
+        'country_labels': list(country_allocation.keys()),
+        'country_values': list(country_allocation.values()),
+    })
 
 @login_required
 def performance_view(request):

@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 class Position(models.Model):
     ticker = models.CharField(max_length=15)
     company_name = models.CharField(max_length=100, blank=True, null=True)
+    sector = models.CharField(max_length=100, blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True)
     shares = models.FloatField()             
     purchase_price = models.FloatField(null=True, blank=True)
     logo = models.ImageField(upload_to='logos/', blank=True, null=True)

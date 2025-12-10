@@ -32,8 +32,17 @@
 
         <div class="charts-container">
             <div class="chart-card">
-                <h3>Répartition (valeur)</h3>
+                <h3>Répartition par Positions</h3>
                 <canvas id="donutChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Répartition par Secteur</h3>
+                <canvas id="sectorChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>Répartition Géographique</h3>
+                <canvas id="countryChart"></canvas>
             </div>
 
             <div class="chart-card">
@@ -136,6 +145,11 @@
     {{ roipercents|json_script:"roipercents" }}
     {{ purchase_prices|json_script:"purchase_prices" }}
     {{ current_prices|json_script:"current_prices" }}
+
+    {{ sector_labels|json_script:"sector_labels" }}
+    {{ sector_values|json_script:"sector_values" }}
+    {{ country_labels|json_script:"country_labels" }}
+    {{ country_values|json_script:"country_values" }}
     </main>
 </body>
 <script>
@@ -290,6 +304,79 @@ new Chart(lineCtx, {
         }
     }
 });
+
+const sectorLabels = JSON.parse(document.getElementById('sector_labels').textContent);
+const sectorValues = JSON.parse(document.getElementById('sector_values').textContent);
+const countryLabels = JSON.parse(document.getElementById('country_labels').textContent);
+const countryValues = JSON.parse(document.getElementById('country_values').textContent);
+
+const sectorColors = [
+    '#3b82f6', // Bleu vif
+    '#0ea5e9', // Bleu ciel
+    '#6366f1', // Indigo
+    '#8b5cf6', // Violet
+    '#14b8a6', // Teal (Sarcelle)
+    '#06b6d4', // Cyan
+    '#1e40af', // Bleu foncé
+    '#64748b', // Gris bleuté
+];
+
+// 2. Palette "Chaude" pour les Pays (Orange, Rose, Rouge, Jaune...)
+const countryColors = [
+    '#f97316', // Orange
+    '#ec4899', // Rose
+    '#ef4444', // Rouge
+    '#f59e0b', // Ambre (Jaune foncé)
+    '#f43f5e', // Rose rouge (Rose)
+    '#d946ef', // Fuschia
+    '#84cc16', // Lime (Vert jaune pour contraster)
+    '#b45309', // Bronze
+];
+
+const sectorCtx = document.getElementById('sectorChart').getContext('2d');
+new Chart(sectorCtx, {
+    type: 'doughnut',
+    data: {
+        labels: sectorLabels,
+        datasets: [{
+            data: sectorValues,
+            backgroundColor: sectorColors,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { position: 'bottom' }
+        },
+        layout: { padding: { bottom: 20 } }
+    }
+});
+
+// --- 3. Chart Pays (Polar Area ou Pie) ---
+// Polar Area est stylé pour les pays, ça change des camemberts classiques
+const countryCtx = document.getElementById('countryChart').getContext('2d');
+new Chart(countryCtx, {
+    type: 'doughnut', 
+    data: {
+        labels: countryLabels,
+        datasets: [{
+            data: countryValues,
+            backgroundColor: countryColors,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { position: 'bottom' }
+        },
+        layout: { padding: { bottom: 20 } }
+    }
+});
+
 
 </script>
 </html>
