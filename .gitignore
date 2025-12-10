@@ -3,3 +3,4 @@ login.env
 __pycache__
 *.csv
 whitelist_emails.txt
+*sqlite3
