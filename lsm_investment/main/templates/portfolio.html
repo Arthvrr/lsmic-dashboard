@@ -92,7 +92,7 @@
             </tbody>
         </table>
         
-        <table>
+        <table id="positionsTable">
             <tr>
                 <th>Logo</th>
                 <th>Ticker</th>
@@ -161,7 +161,7 @@
 // Fonction pour trier le tableau
 function sortTable(n) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.querySelector("table");
+    table = document.getElementById("positionsTable");
     switching = true;
     dir = "asc"; // ordre initial croissant
 
@@ -205,7 +205,7 @@ function sortTable(n) {
 }
 
 // Ajoute l'écouteur de clic sur tous les th
-document.querySelectorAll("th").forEach((th, idx) => {
+document.querySelectorAll("#positionsTable th").forEach((th, idx) => {
     th.style.cursor = "pointer"; // montre que c'est cliquable
     th.addEventListener("click", () => sortTable(idx));
 });
