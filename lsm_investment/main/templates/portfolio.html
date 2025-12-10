@@ -53,6 +53,10 @@
                 <h3>Prix d'achat vs Prix actuel</h3>
                 <canvas id="lineChart"></canvas>
             </div>
+            <div class="chart-card"> 
+                <h3>⚖️ Performance vs Poids (%)</h3>
+                <canvas id="scatterChart"></canvas>
+            </div>
         </div>
 
         <table class="summary-table">
@@ -150,6 +154,7 @@
     {{ sector_values|json_script:"sector_values" }}
     {{ country_labels|json_script:"country_labels" }}
     {{ country_values|json_script:"country_values" }}
+    {{ scatter_data|json_script:"scatter_data" }}
     </main>
 </body>
 <script>
@@ -210,6 +215,12 @@ const tickers = JSON.parse(document.getElementById('tickers').textContent);
 const values = JSON.parse(document.getElementById('values').textContent);
 const roiPercents = JSON.parse(document.getElementById('roipercents').textContent);
 
+const positionColors = [
+    '#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#6366f1', '#ec4899', '#8b5cf6', '#14b8a6', '#f97316', '#06b6d4',
+    '#84cc16', '#d946ef', '#0ea5e9', '#f43f5e', '#64748b', '#a855f7', '#22c55e', '#eab308', '#c026d3', '#fbbf24',
+    '#991b1b', '#166534', '#1e40af', '#ff7f50', '#00ced1', '#9333ea', '#dc143c', '#00fa9a', '#4169e1', '#db7093'
+];
+
 // Donut chart (allocation)
 const donutCtx = document.getElementById('donutChart').getContext('2d');
 const donutChart = new Chart(donutCtx, {
@@ -218,7 +229,8 @@ const donutChart = new Chart(donutCtx, {
         labels: tickers,
         datasets: [{
             data: values,
-            borderWidth: 0.5
+            borderWidth: 0.5,
+            backgroundColor:positionColors
         }]
     },
     options: {
@@ -376,6 +388,66 @@ new Chart(countryCtx, {
         layout: { padding: { bottom: 20 } }
     }
 });
+
+
+// --- 4. SCATTER CHART (Performance vs Poids) ---
+const scatterDataRaw = JSON.parse(document.getElementById('scatter_data').textContent);
+
+const scatterCtx = document.getElementById('scatterChart').getContext('2d');
+new Chart(scatterCtx, {
+    type: 'scatter',
+    data: {
+        datasets: [{
+            label: 'Positions',
+            data: scatterDataRaw, // Format: [{x: 10, y: 50, ticker: 'AAPL'}, ...]
+            backgroundColor: positionColors,
+            borderColor: '#1E3A8A',
+            borderWidth: 1,
+            pointRadius: 6, // Points un peu plus gros pour être cliquables
+            pointHoverRadius: 8
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Poids dans le portefeuille (%)'
+                },
+                beginAtZero: true
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'ROI (%)'
+                }
+                // On ne force pas beginAtZero ici car le ROI peut être négatif
+            }
+        },
+        plugins: {
+            legend: {
+                display: false // Pas besoin de légende pour une seule série
+            },
+            tooltip: {
+                callbacks: {
+                    // C'est ici qu'on personnalise le texte quand on survole un point
+                    label: function(context) {
+                        let point = context.raw;
+                        return `${point.ticker}: ROI ${point.y}% | Poids ${point.x}%`;
+                    }
+                }
+            },
+            annotation: {
+                // Optionnel : Si vous voulez ajouter des lignes (requires chartjs-plugin-annotation)
+                // Pour l'instant on fait simple sans plugin externe
+            }
+        },
+        layout: { padding: { bottom: 20, right: 20, left: 10 } }
+    }
+});
+
 
 
 </script>

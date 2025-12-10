@@ -388,6 +388,22 @@ def portfolio_view(request):
     current_prices = [d['current_price'] if d['current_price'] is not None else 0 for d in data]
     roi_percents = [d['roi_percent'] if d['roi_percent'] is not None else 0 for d in data]
 
+    scatter_data = []
+
+    if portfolio_total_value > 0:
+        for item in data:
+            # On s'assure d'avoir des valeurs valides pour éviter les bugs
+            if item['total_value'] is not None and item['roi_percent'] is not None:
+                
+                weight_percent = (item['total_value'] / portfolio_total_value) * 100
+                
+                scatter_data.append({
+                    'x': round(weight_percent, 2),     # Axe X : Poids %
+                    'y': round(item['roi_percent'], 2), # Axe Y : ROI %
+                    'ticker': item['ticker'],           # Pour l'étiquette (Tooltip)
+                    'company': item['company_name']     # Optionnel : pour info
+                })
+
     return render(request, 'portfolio.html', {
         'data': data,
         'portfolio_total_invested': portfolio_total_invested,
@@ -407,6 +423,7 @@ def portfolio_view(request):
         'sector_values': list(sector_allocation.values()),
         'country_labels': list(country_allocation.keys()),
         'country_values': list(country_allocation.values()),
+        'scatter_data': scatter_data,
     })
 
 @login_required
