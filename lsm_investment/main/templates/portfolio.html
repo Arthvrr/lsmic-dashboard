@@ -45,6 +45,39 @@
                 <canvas id="lineChart"></canvas>
             </div>
         </div>
+
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th>Montant Total Investi</th>
+                    <th>Valeur Actuelle Totale</th>
+                    <th>ROI € Total</th>
+                    <th>ROI % Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ portfolio_total_invested|floatformat:2 }} €</td>
+                    <td>{{ portfolio_total_value|floatformat:2 }} €</td>
+                    
+                    <td>
+                        {% if portfolio_roi_value >= 0 %}
+                            <span style="color: green;">+{{ portfolio_roi_value|floatformat:2 }} €</span>
+                        {% else %}
+                            <span style="color: red;">{{ portfolio_roi_value|floatformat:2 }} €</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if portfolio_roi_percent >= 0 %}
+                            <span style="color: green;">+{{ portfolio_roi_percent|floatformat:2 }} %</span>
+                        {% else %}
+                            <span style="color: red;">{{ portfolio_roi_percent|floatformat:2 }} %</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         
         <table>
             <tr>

@@ -196,33 +196,102 @@ def update_password_view(request):
 
     return redirect("profile")
 
+# @login_required
+# def portfolio_view(request):
+#     positions = Position.objects.all()
+#     data = []
+
+#     for pos in positions:
+        
+#         stock = yf.Ticker(pos.ticker)
+
+
+#         company_name = stock.info.get('longName')
+        
+#         # Si le nom est trouvé et n'est pas déjà enregistré dans la DB, on l'enregistre
+#         if company_name and pos.company_name != company_name:
+#             pos.company_name = company_name
+#             pos.save() # Sauvegarde le nom dans la DB
+        
+#         # Si le nom n'a pas été trouvé via yfinance mais existe dans la DB, on le récupère
+#         elif not company_name and pos.company_name:
+#             company_name = pos.company_name
+
+#         try:
+#             current_price = stock.info.get('regularMarketPrice') or stock.info.get('currentPrice') or stock.info.get('previousClose')
+#         except:
+#             current_price = None
+
+#         total_value = current_price * pos.shares if current_price else None
+#         if pos.purchase_price and current_price:
+#             roi_value = (current_price - pos.purchase_price) * pos.shares
+#             roi_percent = ((current_price - pos.purchase_price) / pos.purchase_price) * 100
+#         else:
+#             roi_value = None
+#             roi_percent = None
+
+#         data.append({
+#             'ticker': pos.ticker,
+#             'company_name': company_name,
+#             'shares': pos.shares,
+#             'purchase_price': pos.purchase_price,
+#             'current_price': current_price,
+#             'total_value': total_value,
+#             'roi_value': roi_value,
+#             'roi_percent': roi_percent,
+#             'logo': pos.logo,
+#         })
+
+#     tickers = [d['ticker'] for d in data]
+#     values = [d['total_value'] if d['total_value'] is not None else 0 for d in data]
+#     purchase_prices = [d['purchase_price'] if d['purchase_price'] is not None else 0 for d in data]
+#     current_prices = [d['current_price'] if d['current_price'] is not None else 0 for d in data]
+#     roi_percents = [d['roi_percent'] if d['roi_percent'] is not None else 0 for d in data]
+
+#     return render(request, 'portfolio.html', {
+#         'data': data,
+#         'tickers': tickers,
+#         'values': values,
+#         'roipercents': roi_percents,
+#         'purchase_prices': purchase_prices,
+#         'current_prices': current_prices,
+#     })
+
 @login_required
 def portfolio_view(request):
     positions = Position.objects.all()
     data = []
 
+    # --- 1. Initialisation des variables pour le TOTAL ---
+    portfolio_total_invested = 0.0
+    portfolio_total_value = 0.0
+
     for pos in positions:
-        
         stock = yf.Ticker(pos.ticker)
-
-
-        company_name = stock.info.get('longName')
         
-        # Si le nom est trouvé et n'est pas déjà enregistré dans la DB, on l'enregistre
+        # ... (Logique existante pour company_name inchangée) ...
+        company_name = stock.info.get('longName')
         if company_name and pos.company_name != company_name:
             pos.company_name = company_name
-            pos.save() # Sauvegarde le nom dans la DB
-        
-        # Si le nom n'a pas été trouvé via yfinance mais existe dans la DB, on le récupère
+            pos.save()
         elif not company_name and pos.company_name:
             company_name = pos.company_name
+        # ... 
 
         try:
             current_price = stock.info.get('regularMarketPrice') or stock.info.get('currentPrice') or stock.info.get('previousClose')
         except:
             current_price = None
 
-        total_value = current_price * pos.shares if current_price else None
+        # Calculs individuels
+        invested_value = pos.purchase_price * pos.shares if pos.purchase_price else 0
+        total_value = current_price * pos.shares if current_price else 0
+
+        # --- 2. Agrégation des totaux ---
+        portfolio_total_invested += invested_value
+        portfolio_total_value += total_value
+
+        # Calculs ROI individuels (inchangés pour la liste data)
         if pos.purchase_price and current_price:
             roi_value = (current_price - pos.purchase_price) * pos.shares
             roi_percent = ((current_price - pos.purchase_price) / pos.purchase_price) * 100
@@ -236,12 +305,21 @@ def portfolio_view(request):
             'shares': pos.shares,
             'purchase_price': pos.purchase_price,
             'current_price': current_price,
-            'total_value': total_value,
+            'total_value': total_value if current_price else None, # Garder None pour l'affichage individuel si pas de prix
             'roi_value': roi_value,
             'roi_percent': roi_percent,
             'logo': pos.logo,
         })
 
+    # --- 3. Calcul du ROI Global ---
+    portfolio_roi_value = portfolio_total_value - portfolio_total_invested
+    
+    if portfolio_total_invested > 0:
+        portfolio_roi_percent = (portfolio_roi_value / portfolio_total_invested) * 100
+    else:
+        portfolio_roi_percent = 0
+
+    # ... (Préparation des données pour les graphiques inchangée) ...
     tickers = [d['ticker'] for d in data]
     values = [d['total_value'] if d['total_value'] is not None else 0 for d in data]
     purchase_prices = [d['purchase_price'] if d['purchase_price'] is not None else 0 for d in data]
@@ -250,6 +328,12 @@ def portfolio_view(request):
 
     return render(request, 'portfolio.html', {
         'data': data,
+        # --- 4. Passer les totaux au template ---
+        'portfolio_total_invested': portfolio_total_invested,
+        'portfolio_total_value': portfolio_total_value,
+        'portfolio_roi_value': portfolio_roi_value,
+        'portfolio_roi_percent': portfolio_roi_percent,
+        # ----------------------------------------
         'tickers': tickers,
         'values': values,
         'roipercents': roi_percents,
