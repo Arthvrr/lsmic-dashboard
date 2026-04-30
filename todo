@@ -1,7 +1,13 @@
-- sécuriser le fait de créer un compte (membre et alumni)
-
-- ajouter confirmation emails création de compte
-
-
+- ajouter nom de domaine perso
+- ajouter emails alumni a la whitelist d'emails
+- ajouter confirmation par email création de compte (pas que qqun vole l'email de qqun d'autre)
+- ajouter un champ "percentage" dans la db Users pour calculer le pourcentage du portefeuille qu'un membre possède --> perf perso
+- ajouter feed de news d'actualités
+- ajouter des graphes dans portfolio.html (market cap, dividende versé par actions + yield,PER,...)
+- ajouter séparation de 2 sections : Détails du Portefeuille | Graphiques
 - gérer le responsive téléphone
 - migrer l'envoi d'emails + app pythonanywhere sur l'email lsmiclub@gmail.com
+
+
+ÉVOLUÉ
+- ajouter une méthode DCF pour le calcul du prix d'une action

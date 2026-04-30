@@ -112,9 +112,9 @@
                 </td>
                 <td title="{{ p.company_name }}">{{ p.ticker }}</td>
                 <td>{{ p.shares }}</td>
-                <td>{% if p.purchase_price %}{{ p.purchase_price }}{% else %}-{% endif %}</td>
-                <td>{% if p.current_price %}{{ p.current_price }}{% else %}-{% endif %}</td>
-                <td>{% if p.total_value %}{{ p.total_value|floatformat:2 }}{% else %}-{% endif %}</td>
+                <td>{% if p.purchase_price %}{{ p.purchase_price|floatformat:2 }}{% else %}-{% endif %}</td>
+                <td>{% if p.current_price %}{{ p.current_price|floatformat:2 }}{% else %}-{% endif %}</td>
+                <td>{% if p.total_value %}{{ p.total_value|floatformat:2|floatformat:2 }}{% else %}-{% endif %}</td>
                 <td>
                     {% if p.roi_value %}
                         {% if p.roi_value >= 0 %}
